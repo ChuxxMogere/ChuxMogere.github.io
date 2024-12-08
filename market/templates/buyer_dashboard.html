@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    .dashboard-container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: auto;
+    }
+    h2 {
+        color: #2c662d;
+    }
+    .pink-banner {
+    background: #d4edda; /* Soft Green */
+    border: 1px solid #c3e6cb;
+    padding: 30px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #2c662d;
+}
+
+    .pink-banner h3 {
+        font-size: 24px;
+        color: #d00000;
+        margin-bottom: 10px;
+    }
+    .pink-banner p {
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        font-size: 18px;
+    }
+    .icon-grid {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .icon-box {
+        text-align: center;
+    }
+    .icon-box i {
+        font-size: 30px;
+        color: #2c662d;
+    }
+    .icon-box p {
+        font-size: 16px;
+        color: #333;
+    }
+    .products-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .product-card {
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: calc(25% - 20px);
+        box-sizing: border-box;
+    }
+    .product-card img {
+        max-width: 100%;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    .product-card h4 {
+        color: #333;
+        margin-bottom: 5px;
+    }
+    .product-card .price {
+        color: #2c662d;
+        font-weight: bold;
+    }
+    .product-card .details-link {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 5px 10px;
+        background: #2c662d;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+    .product-card .details-link:hover {
+        background: #228b22;
+    }
+</style>
+
+<div class="dashboard-container">
+
+
+    <div class="pink-banner">
+        <h3>Welcome, {{ user.username }}!</h3>
+        <p>Browse here for fresh products directly from the farm.</p>
+        <p>Enjoy farm-fresh produce delivered straight to you!</p>
+
+        <div class="icon-grid">
+            <!-- Guaranteed Fresh Icon -->
+            <div class="icon-box">
+                <i class="fas fa-leaf"></i>
+                <p>Guaranteed Fresh</p>
+            </div>
+            <!-- Support Farmers Icon -->
+            <div class="icon-box">
+                <i class="fas fa-hand-holding-heart"></i>
+                <p>Support Farmers</p>
+            </div>
+            <!-- Eco-Friendly Icon -->
+            <div class="icon-box">
+                <i class="fas fa-recycle"></i>
+                <p>Eco-Friendly</p>
+            </div>
+            <!-- Best Prices Icon -->
+            <div class="icon-box">
+                <i class="fas fa-tags"></i>
+                <p>Best Prices</p>
+            </div>
+        </div>
+    </div>
+
+    <h3>Available Products</h3>
+    <div class="products-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h4>{{ product.name }}</h4>
+                <p class="price">Ksh {{ product.price }}</p>
+                <p>{{ product.description }}</p>
+                <a href="{% url 'product_detail' product.id %}" class="details-link">View Details</a>
+            </div>
+        {% empty %}
+            <p>No products at the moment</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

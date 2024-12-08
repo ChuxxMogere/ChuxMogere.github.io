@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    {% load static %}
+</head>
+<style>
+     .navbar-brand img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.navbar-icon img, .weather-icon img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    padding: 2px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.navbar-icon img:hover, .weather-icon img:hover {
+    transform: scale(1.1);
+    border-color: #2c662d;
+}
+.navbar-brand {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+.weather-icon img {
+    margin: 0;
+}
+
+.navbar .d-flex .navbar-icon {
+    margin-left: 15px;
+}
+.dashboard-message {
+    background-color: #e7f7e5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    color: #2c662d;
+}
+
+.dashboard-message h3 {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #1b4d1c;
+}
+
+.dashboard-message .message-text {
+    font-size: 1.1rem;
+    font-style: italic;
+    font-family: 'Arial', sans-serif;
+}
+
+
+        .weather-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.current-weather, .forecast {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.forecast ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+
+
+
+        .dashboard-content {
+            padding: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .dashboard-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        h2 {
+            color: #2c662d;
+        }
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #2c662d;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #245824;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+   .progress-indicator {
+    font-size: 1.1rem;
+    background-color: #fffbe5;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #f2d16a;
+    color: #b28c25;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 75%;
+    margin: 0 auto;
+    background-color: #ccc2a4;
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+
+.product-card {
+    display: flex;
+    align-items: center;
+    border: 2px solid navajowhite;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+
+}
+
+
+.product-image img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+
+.product-info {
+    flex: 1;
+}
+
+.product-info h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+}
+
+
+.product-info .description {
+    font-size: 1rem;
+    color: #777;
+}
+
+.product-info .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+
+.btn-delete {
+    font-size: 1rem;
+    color:red;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    padding: 5px 10px;
+
+}
+
+.btn-delete:hover {
+    text-decoration: none;
+    background-color: #ffccd5;
+    color: #dc3545;
+}
+    </style>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+
+        <div class="navbar-icon">
+            <a href=" " title="Profile">
+                <img src="../../static/images/profile4.jpg" alt="Profile Icon">
+            </a>
+        </div>
+
+
+        <div class="navbar-brand mx-auto d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center">
+                <img src="../../static/images/image%204.jpg" alt="Logo">
+                <span class="ms-2 fw-bold">SOKO SHAMBANI</span>
+            </a>
+        </div>
+
+
+        <div class="d-flex align-items-center">
+            <a href="{% url 'farmer_dashboard' %}" class="navbar-icon me-3" data-bs-toggle="tooltip" title="Dashboard">
+                <img src="../../static/images/home.jpg" alt="Home Icon">
+            </a>
+            <a href="{% url 'weather_updates' %}" class="weather-icon me-3" data-bs-toggle="tooltip" title="View Weather">
+                <img src="../../static/images/weather1.jpg" alt="Weather Icon">
+            </a>
+        </div>
+
+
+        <div class="navbar-icon me-3">
+            <a href="{% url 'farmer_notifications' %}" title="Notifications">
+                <img src="../../static/images/notification%20icon.jpg" alt="Notifications">
+                {% if unread_notifications_count > 0 %}
+                <span class="badge bg-danger">{{ unread_notifications_count }}</span>
+                {% endif %}
+            </a>
+        </div>
+
+        <!-- Logout -->
+        <div class="navbar-icon">
+            <a href="{% url 'logout' %}" title="Logout">
+                <img src="../../static/images/logout4.jpg" alt="Logout">
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+{% block content %}
+
+
+{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize tooltip
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+
+</body>
+</html>

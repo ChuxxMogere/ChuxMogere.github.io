@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Checkout</h2>
+
+    <!-- Single Form -->
+    <form method="POST" action="{% url 'place_order' %}">
+        {% csrf_token %}
+
+        <!-- Billing Information -->
+        <div class="card p-4 mb-4">
+            <h4>Billing Information</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="email">Email Address</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" name="phone" id="phone" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="street">Physical Address (House Number/Street/Apartment)</label>
+                    <input type="text" name="street" id="street" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="town">Physical Address (Town/City)</label>
+                    <input type="text" name="town" id="town" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="county">County</label>
+                    <select name="county" id="county" class="form-control" required>
+                        <option value="Nairobi">Nairobi</option>
+                        <option value="Machakos">Machakos</option>
+                        <option value="Kiambu">Kiambu</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+
+<div class="card p-4 mb-4">
+    <h4>Order Summary</h4>
+
+    {% if cart_items %}
+        <h5>Cart Summary</h5>
+        <ul>
+            {% for item in cart_items %}
+                <li>{{ item.product.name }} (x{{ item.quantity }}) - Ksh {{ item.total_price }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Subtotal:</strong> Ksh {{ total_price }}</p>
+    {% else %}
+        <p>No items in your cart.</p>
+    {% endif %}
+
+    <p><strong>Total: Ksh {{ total_price }}</strong></p>
+</div>
+
+
+        <!-- Delivery Options -->
+        <div class="card p-4 mb-4">
+            <h4>Delivery Options</h4>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="delivery_option" id="pickup" value="pickup" checked>
+                <label class="form-check-label" for="pickup">Pickup(In CBD, Machakos Town, Thika)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="delivery_option" id="delivery" value="delivery">
+                <label class="form-check-label" for="delivery">Home Delivery (+{{ delivery_fee }} Ksh)</label>
+            </div>
+        </div>
+
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="total_price" value="{{ total_price }}">
+        <input type="hidden" name="product_id" value="{{ product.id }}">  <!-- Use product_id instead of farmer_id -->
+
+        <!-- Place Order Button -->
+        <button type="submit" class="btn btn-success">Place Order</button>
+    </form>
+</div>
+{% endblock %}

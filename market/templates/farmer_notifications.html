@@ -1,0 +1,21 @@
+{% extends 'base_farmer.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Notifications</h2>
+    {% if notifications %}
+        <ul class="list-group">
+            {% for notification in notifications %}
+                <li class="list-group-item">
+                    <p>{{ notification.message }}</p>
+                    <p><strong>Order ID:</strong> {{ notification.order.id }}</p>
+                    <p><small>{{ notification.created_at|date:"F j, Y, g:i a" }}</small></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">You have no notifications.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

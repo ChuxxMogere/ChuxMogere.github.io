@@ -1,0 +1,70 @@
+{% extends 'base_farmer.html' %}
+{% block content %}
+
+    <div class="dashboard-container">
+        <div class="dashboard-message text-center my-4">
+     <h2>Jambo {{ user.username }}, Karibu Soko Shambani </h2>
+    <p class="message-text">
+        🌦️ Click on the <strong>weather icon</strong> above to view the latest weather updates for better farming decisions.<br>
+        🛒 Use the form below to upload your products and manage them effortlessly!
+    </p>
+</div>
+
+
+        <h3>Upload New Product</h3>
+        <form action=" " method="post" enctype="multipart/form-data">
+
+             {% csrf_token %}
+
+
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter the name of the product" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Include the unit they are going for e.g per bunch, per kg, per piece." rows="4" required></textarea>
+
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" placeholder="Ksh 10 " required>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <button type="submit">Upload</button>
+        </form>
+
+
+
+    </div>
+       <div class="card mt-4">
+    <div class="card-body">
+        <h2><strong>My Products</strong></h2>
+        <div class="progress-indicator text-center my-4">
+    <p><strong>Total Products Uploaded:</strong> {{ products|length }}</p>
+</div>
+        {% if products %}
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                </div>
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="description">{{ product.description }}</p>
+                    <p class="price"> Ksh {{ product.price }}</p>
+                    <a href="{% url 'delete_product' product.id %}" class="btn-delete"
+                        onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>You haven't added any products yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+
+{% endblock %}

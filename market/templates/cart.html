@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .cart-container {
+        margin: 50px auto;
+        max-width: 800px;
+        padding: 20px;
+    }
+
+    h3 {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .cart-item img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .item-details {
+        flex: 2;
+        margin-left: 15px;
+    }
+
+    .item-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .item-description {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .item-price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin-right: 10px;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100px;
+    }
+
+    .quantity-control button {
+        background-color: #e9ecef;
+        border: none;
+        border-radius: 15px;
+        padding: 5px 10px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .quantity-control input {
+        width: 35px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 0 5px;
+    }
+
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.delete-btn img {
+    width: 50px; /* Adjust size as needed */
+    height: 50px;
+}
+
+.delete-btn:hover::after {
+    content: "Delete";
+    position: absolute;
+    top: -25px; /* Adjust for positioning above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    /*.delete-btn {*/
+    /*    background: none;*/
+    /*    border: none;*/
+    /*    font-size: 1.5rem;*/
+    /*    color: #dc3545;*/
+    /*    cursor: pointer;*/
+    /*}*/
+
+    /*.delete-btn:hover {*/
+    /*    color: #c82333;*/
+    /*}*/
+
+    .cart-footer {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .total-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+
+    .checkout-btn {
+        background-color: #28a745;
+        color: white;
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .checkout-btn:hover {
+        background-color: #218838;
+    }
+</style>
+
+
+<div class="cart-container">
+    <h3>Your Cart</h3>
+
+    <!-- Cart Items -->
+    {% for item in cart_items %}
+    <div class="cart-item">
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+        <div class="item-details">
+            <div class="item-title">{{ item.product.name }}</div>
+            <div class="item-description">{{ item.product.description }}</div>
+
+
+        </div>
+        <div class="item-price">{{ item.total_price }} Ksh</div>
+        <div class="quantity-control">
+            <form method="POST" action="{% url 'update_cart_item' item.id %}">
+                {% csrf_token %}
+                <button type="submit" name="operation" value="decrease">-</button>
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" readonly>
+                <button type="submit" name="operation" value="increase">+</button>
+            </form>
+        </div>
+        <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+            {% csrf_token %}
+             <button class="delete-btn" title="Delete">
+        <img src="../../static/images/deletee.png" alt="Delete">
+    </button>
+        </form>
+    </div>
+    {% endfor %}
+
+    <!-- Cart Footer -->
+    <div class="cart-footer">
+        <div class="total-price">Total: {{ total_price }} Ksh</div>
+        <form method="POST" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

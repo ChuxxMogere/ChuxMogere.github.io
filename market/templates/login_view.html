@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="icon" type="image/x-icon" href="../../static/images/logo2.jpg">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
+            height: 100vh;
+            display: flex;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .image-section {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .badge {
+            padding: 12px 24px;
+            background-color: white;
+            color: black;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 16px;
+        }
+
+
+        .login-section {
+            flex: 1;
+            background-color: #dcdcdc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            background: none;
+            text-align: center;
+        }
+
+        .login-form h2 {
+            margin-bottom: 30px;
+            color: #228b22;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .login-form p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .login-form p a {
+            color: #228b22;
+            text-decoration: none;
+        }
+
+        .login-form p a:hover {
+            text-decoration: underline;
+        }
+
+        .login-form label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+            color: #555;
+            text-align: left;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 15px;
+            background: #228b22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .login-form button:hover {
+            background: #196619;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="image-section">
+            <img src="../../static/images/image%203.jpg" alt="Farmers">
+            <div class="overlay">
+                <div class="badge">FRESH</div>
+                <div class="badge">LOCAL</div>
+                <div class="badge">DELIVERED</div>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="login-section">
+            <div class="login-form">
+                <h2>Sign In</h2>
+                <p>Don't have an account? <a href="{% url 'register' %}">Create now</a></p>
+                <form method="POST" action="{% url 'login_view' %} ">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+<!--                    <label for="username">Username</label>-->
+<!--                    <input type="text" id="username" name="username" placeholder="Enter your username" required>-->
+
+<!--                    <label for="password">Password</label>-->
+<!--                    <input type="password" id="password" name="password" placeholder="Enter your password" required>-->
+
+                    <button type="submit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

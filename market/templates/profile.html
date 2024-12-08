@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .card-header img {
+    border: 3px solid #28a745; /* Add a green border around the profile photo */
+}
+
+.card {
+    background-color: #f8f9fa; /* Slight off-white for the card */
+}
+
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Add green focus effect */
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+</style>
+<div class="container mt-5 d-flex justify-content-center">
+    <!-- Profile Card -->
+    <div class="card shadow-lg" style="width: 40rem; border-radius: 15px;">
+        <!-- Profile Image -->
+        <div class="card-header text-center bg-white">
+            {% if user.photo %}
+                <img src="{{ user.photo.url }}" alt="Profile Photo" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+            {% else %}
+                <div class="d-flex justify-content-center align-items-center mb-3" style="width: 150px; height: 150px; background-color: #f0f0f0; border-radius: 50%;">
+                    <i class="fas fa-user text-muted" style="font-size: 3rem;"></i>
+                </div>
+            {% endif %}
+            <h4 class="fw-bold">{{ user.username }}</h4>
+            <p class="text-muted">{{ user.email }}</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </div>
+                <div class="mb-3">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+                <div class="mb-3">
+                    {{ form.photo.label_tag }}
+                    {{ form.photo }}
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg w-100">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base_farmer.html' %}
+{% block content %}
+
+
+
+ <form method="get" action="{% url 'weather_updates' %}" class="mb-4">
+    <label for="city_name">Enter City:</label>
+    <input
+        type="text"
+        id="city_name"
+        name="city_name"
+        placeholder="Enter your city"
+        value="{{ city_name }}"
+        required
+    >
+              <button type="submit" class="btn btn-success">Get Weather</button>
+
+       <div class="weather-section">
+            <div class="current-weather">
+        <h3>Today's Weather</h3>
+        {% if current_weather %}
+            <p>City: {{ current_weather.name }}</p>
+            <p><strong>Temperature:</strong> {{ current_weather.main.temp }}°C</p>
+            <p><strong>Condition:</strong> {{ current_weather.weather.0.description }}</p>
+                 <p><strong>Humidity:</strong> {{ current_weather.main.humidity }}%</p>
+    <p><strong>Wind Speed:</strong> {{ current_weather.wind.speed }} m/s</p>
+
+            <img src="http://openweathermap.org/img/wn/{{ current_weather.weather.0.icon }}@2x.png" alt="Weather Icon">
+        {% else %}
+            <p>Could not fetch current weather data.</p>
+        {% endif %}
+    </div>
+
+
+    <div class="forecast">
+        <h3>5-Day Forecast</h3>
+        {% if forecast and forecast.list %}
+            <ul>
+                {% for item in forecast.list %}
+                    <li>
+                        <p>Date: {{ item.dt_txt }}</p>
+                        <p>Temperature: {{ item.main.temp }}°C</p>
+                        <p>Condition: {{ item.weather.0.description }}</p>
+                        <img src="http://openweathermap.org/img/wn/{{ item.weather.0.icon }}@2x.png" alt="Weather Icon">
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Could not fetch weather forecast data.</p>
+        {% endif %}
+    </div>
+       </div>
+
+</form>
+
+{% endblock %}
