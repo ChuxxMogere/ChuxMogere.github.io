@@ -18,7 +18,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from market import views
-from market.views import profile_view
+from market.views import profile_view, farmer_profile_view
 
 urlpatterns = [
 
@@ -35,12 +35,14 @@ urlpatterns = [
     path('remove_from_cart/<int:cart_item_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('checkout/', views.checkout, name='checkout'),
     path('place_order/', views.place_order, name='place_order'),
-    path('complete_order/', views.complete_order, name='complete_order'),
     path('order_success/', views.order_success, name='order_success'),
     path('weather_updates/',views.weather_updates, name='weather_updates'),
     path('profile/', profile_view, name='profile'),
+    path('farmer_profile/', farmer_profile_view, name='farmer_profile'),
     path('logout/', views.logout_view, name='logout'),
     path('farmer_notifications/', views.farmer_notifications, name='farmer_notifications'),
+    path('farmer_notifications/<int:notification_id>/mark-read/', views.mark_notification_as_read, name='mark_notification_as_read'),
+
 
 
 

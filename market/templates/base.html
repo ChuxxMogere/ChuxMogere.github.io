@@ -59,32 +59,6 @@
     height: 70%;
     border-radius: 50%;
 }
-
-/*.navbar-icon {*/
-/*    width: 50px; !* Adjust size as needed *!*/
-/*    height: 50px;*/
-/*    border-radius: 50%;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    background-color: #e0f7e9; !* Light green for a fresh feel *!*/
-/*    margin: 0 10px;*/
-/*    transition: transform 0.3s ease, box-shadow 0.3s ease;*/
-/*    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
-/*}*/
-
-/*.navbar-icon:hover {*/
-/*    transform: scale(1.1); !* Slight enlargement on hover *!*/
-/*    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);*/
-/*}*/
-
-/*.navbar-icon img {*/
-/*    width: 70%; !* Icon inside the circle should fit well *!*/
-/*    height: 70%;*/
-/*    border-radius: 50%; !* Ensures the image inside is circular *!*/
-/*}*/
-
-
 footer {
     background-color: #f8f9fa;
     padding: 20px 0;
@@ -106,7 +80,7 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* Ensure footer stays below content */
+
 body {
     display: flex;
     flex-direction: column;
@@ -114,14 +88,10 @@ body {
 }
 
 .content {
-    flex: 1; /* Pushes footer to the bottom */
+    flex: 1;
 }
 
-
-
-
-
-        footer a {
+ footer a {
             color: #28a745;
         }
 
@@ -152,13 +122,13 @@ body {
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
         <div class="container d-flex align-items-center justify-content-between">
 
-<!--            <div class="navbar-profile">-->
+
 
 
                 <a href="{% url 'profile' %}" class="navbar-icon">
                     <img src="../../static/images/profile4.jpg" alt="Profile" title="Profile">
                 </a>
-<!--            </div>-->
+
 
            <div class="navbar-brand d-flex flex-column align-items-center" >
                 <img src="../../static/images/image%204.jpg" alt="Logo"  class="center-logo">

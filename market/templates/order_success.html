@@ -37,30 +37,28 @@
 </style>
 
 <div class="container text-center mt-5 mb-5">
-    <!-- Success Icon -->
+
     <div class="mb-4">
         <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
     </div>
 
-    <!-- Main Heading -->
     <h1 class="text-success fw-bold mb-3">Order Successfully Placed!</h1>
 
-    <!-- Subheading -->
+
     <p class="fs-5 text-muted mb-4">Thank you for shopping with us! Your order has been received and will be processed shortly. You will be contacted soon.</p>
 
-    <!-- Order Details Section -->
     <div class="card shadow-sm p-4">
         <h3 class=" " style="color: #0f5132 ">Order Details</h3>
         <ul class="list-group list-group-flush mt-3 mb-3">
             {% for item in order.items.all %}
                 <li class="list-group-item d-flex justify-content-between">
-                    <!-- Item Name and Quantity -->
+
                     <div class="item-details">
                         <span class="fw-bold">{{ item.product.name }}</span>
 
                     </div>
 
-                    <!-- Total Price for the Item -->
+
                     <div class="item-price">
                         <span>Ksh {{ item.quantity }}  * {{ item.product.price }}</span>
                     </div>
@@ -68,14 +66,14 @@
             {% endfor %}
         </ul>
 
-        <!-- Total Price -->
+
         <p class="fs-5 mt-3"><strong>Total Price:</strong> <span class="text-success">Ksh {{ order.total_price }}</span></p>
 
-        <!-- Delivery Method -->
+
         <p class="fs-5"><strong>Delivery Method:</strong> <span class=" " style="color: #0f5132">{{ order.delivery_option }}</span></p>
     </div>
 
-    <!-- Call to Action Buttons -->
+
     <div class="mt-4">
         <a href="{% url 'buyer_dashboard' %}" class="btn btn-success btn-lg me-2">
             <i class="fas fa-shopping-bag"></i> Continue Shopping
@@ -85,7 +83,7 @@
         </a>
     </div>
 
-    <!-- Thank You Message -->
+
     <p class="mt-5 text-muted fst-italic">"We value your trust in us. Looking forward to serving you again!"</p>
 </div>
 {% endblock %}

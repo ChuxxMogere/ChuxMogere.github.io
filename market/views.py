@@ -120,7 +120,7 @@ def product_detail(request, id):
         cart_item, created = Cart.objects.get_or_create(product=product, user=request.user)
         cart_item.quantity += quantity
         cart_item.save()
-        messages.success(request, f"{product.name} has been added to your cart!")
+        messages.success(request,  "Item added to your cart successfully!")
 
     context = {
         'product': product,
@@ -195,7 +195,7 @@ def place_order(request):
     delivery_option = request.POST['delivery_option']
     print("Delivery option: ", delivery_option)
 
-    # Step 4: Create the order
+
     order = Order.objects.create(
         user=request.user,
         total_price=total_price,
@@ -203,7 +203,6 @@ def place_order(request):
     )
     order.save()
 
-    # Create Order Items and send notifications
     for item in cart_items:
         OrderItem.objects.create(
             order=order,
@@ -212,90 +211,36 @@ def place_order(request):
             price=item.product.price,
         )
 
-        # Notify the farmer
         farmer = item.product.farmer
         product_name = item.product.name
         buyer_email = request.user.email
 
-        # Create a message for the farmer
+
         message = f"An order has been placed for {product_name}.\n"
         message += f"Buyer Details: Name: {request.user.username}, Email: {buyer_email}\n"
-        message += f"Delivery Option: {delivery_option}, Quantity: {item.quantity}, Total Price: Ksh {total_price}"
+        message += f"Delivery Option: {delivery_option}, Quantity: {item.quantity}"
 
-        # Save notification to the database
+
         Notification.objects.create(
             farmer=farmer,
             message=message,
             order=order,
         )
 
-        # Send an email to the farmer
+
         send_mail(
             'New Order Notification',
             message,
             settings.EMAIL_HOST_USER,
-            [farmer.email],  # Farmer's email address
+            [farmer.email],
             fail_silently=False,
         )
 
-    # Clear the cart
+
     cart_items.delete()
 
     return redirect('order_success')
 
-def complete_order(request):
-
-    global products, message
-    total_price = request.POST['total_price']
-    cart_items = Cart.objects.filter(user=request.user)
-    if not cart_items:
-        messages.error(request, 'Your cart is empty.')
-        return redirect('cart')
-
-    delivery_option = request.POST['delivery_option']
-    print("Delivery option: ", delivery_option)
-
-    # Step 4: Create the order
-    order = Order.objects.create(
-        user=request.user,
-        total_price=total_price,
-        delivery_option=delivery_option,
-        # status='pending',
-    )
-    order.save()
-
-    for item in cart_items:
-        OrderItem.objects.create(
-            order=order,
-            product=item.product,
-            quantity=item.quantity,
-            price=item.product.price,
-        )
-
-
-
-
-
-    for item in cart_items:
-        farmer = item.product.farmer
-        products = [item.product.name for item in cart_items]
-        message = f"An order has been placed for the following items: {', '.join(products)}"
-    if request.method == "POST":
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        email = request.POST['email']
-        phone = request.POST['phone']
-        farm = 'cynthiamogere7@gmail.com'
-        send_mail(
-            'Billing Order',
-            f"{message} ",
-            settings.EMAIL_HOST_USER,
-            [email],
-            fail_silently=False,
-
-        )
-        return redirect('order_success')
-    return redirect('cart')
 
 def order_success(request):
 
@@ -321,14 +266,43 @@ def profile_view(request):
 
 def farmer_notifications(request):
     if not request.user.is_farmer:
-        return redirect('home')  # Redirect if the user is not a farmer
+        return redirect('home')
 
+    notifications = Notification.objects.filter(farmer=request.user).order_by('-created_at')
     unread_notifications_count = Notification.objects.filter(farmer=request.user, is_read=False).count()
     context = {
+        'notifications': notifications,
         'unread_notifications_count': unread_notifications_count
     }
 
     return render(request, 'farmer_notifications.html', context)
+
+@login_required
+def farmer_profile_view(request):
+    if not request.user.is_farmer:
+        return redirect('home')  # Restrict access if the user is not a farmer
+
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('farmer_profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+
+    return render(request, 'farmer_profile.html', {'form': form})
+
+def mark_notification_as_read(request, notification_id):
+    if not request.user.is_authenticated or not request.user.is_farmer:
+        return redirect('login_view')
+
+    notification = Notification.objects.filter(id=notification_id, farmer=request.user).first()
+    if notification:
+        notification.is_read = True
+        notification.save()
+
+    return redirect('farmer_notifications')
 
 
 

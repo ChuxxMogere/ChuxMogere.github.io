@@ -5,10 +5,13 @@
     {% if notifications %}
         <ul class="list-group">
             {% for notification in notifications %}
-                <li class="list-group-item">
+                <li class="list-group-item {% if not notification.is_read %}bg-light{% endif %}">
                     <p>{{ notification.message }}</p>
                     <p><strong>Order ID:</strong> {{ notification.order.id }}</p>
                     <p><small>{{ notification.created_at|date:"F j, Y, g:i a" }}</small></p>
+                    {% if not notification.is_read %}
+        <a href="{% url 'mark_notification_as_read' notification.id %}" class="btn btn-success">Mark as Read</a>
+    {% endif %}
                 </li>
             {% endfor %}
         </ul>
