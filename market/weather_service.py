@@ -1,10 +1,12 @@
 import requests
 
-API_KEY = "c178428bc5e6759e4bdc255c718013f6"
+from marketplace.settings import env
+
+API_KEY = env['API_KEY']
 
 
 def get_weather_data(city_name):
-    api_key = "c178428bc5e6759e4bdc255c718013f6"
+    api_key = env['API_KEY']
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&units=metric&appid={api_key}"
     response = requests.get(url)
 
